@@ -11,7 +11,6 @@ public class MovingRobot {
 
     int[][] floorArrays = new int[3][3];
 
-
     void createArray(int n){
         
     }
