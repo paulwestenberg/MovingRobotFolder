@@ -22,15 +22,27 @@ public class MovingRobot {
         }
     }
     void printArray(){
-        for (int i=floorArrays.length-1; i>=0; i--){
-            System.out.print(i + " ");
+        String[][] tempArray = new String[10][10];
+        for (int i=0; i<floorArrays.length; i++){
             for (int j=0; j<floorArrays.length; j++){
-                System.out.print(floorArrays[i][j] + " ");
+                if (floorArrays[i][j] == 0){
+                    tempArray[i][j] = " ";
+                }
+                else {
+                    tempArray[i][j] = "*";
+                }
+            }
+        }
+
+        for (int i=tempArray.length-1; i>=0; i--){
+            System.out.print(i + " ");
+            for (int j=0; j<tempArray.length; j++){
+                System.out.print(tempArray[i][j] + " ");
             }
             System.out.println();
         }
         System.out.print("  ");
-        for (int j=0; j<floorArrays.length; j++){
+        for (int j=0; j<tempArray.length; j++){
             System.out.print(j + " ");
         }
         System.out.println();
