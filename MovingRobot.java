@@ -7,9 +7,11 @@ public class MovingRobot {
     //for the pen 
     //if true -> pen down (writing)
     //if false -> pen up (not writing)
-    public boolean PenStatus=false;
+    public boolean penStatus=false;
 
+    //default array will be a 10*10
     int[][] floorArrays = new int[10][10];
+
 
     void createArray(int n){
         
@@ -20,6 +22,10 @@ public class MovingRobot {
                 floorArrays[i][j] = 0;
             }
         }
+        posX = 0;
+        posY = 0;
+        direction = "North";
+        penStatus = false;
     }
     void printArray(){
         String[][] tempArray = new String[10][10];
@@ -55,7 +61,7 @@ public class MovingRobot {
         posY=j;
     }
     public void setPenStatus(boolean k){
-        PenStatus=k;
+        penStatus=k;
     }
     public void setDirection(String d){
         direction = d;
@@ -69,7 +75,7 @@ public class MovingRobot {
         return posY;
     }
     public boolean getPenStatus(){
-        return PenStatus;
+        return penStatus;
     }
     public String getDirection(){
         return direction;
@@ -233,5 +239,5 @@ public class MovingRobot {
         System.out.println("Thank you for participating");
     }
 
-
+    
 }
