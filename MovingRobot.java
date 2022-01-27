@@ -12,10 +12,25 @@ public class MovingRobot {
     //default array will be a 10*10
     int[][] floorArrays = new int[10][10];
 
+    void initializeArray(int n){
 
-    void createArray(int n){
-        
+        this.floorArrays = null;
+        int[][] tempFloorArrays = new int[n][n];
+        this.floorArrays = tempFloorArrays;
+
+        for (int i=0; i<this.floorArrays.length; i++){
+            for (int j=0; j<this.floorArrays.length; j++){
+                this.floorArrays[i][j] = 0;
+            }
+        }
+        posX = 0;
+        posY = 0;
+        direction = "North";
+        penStatus = false;
+
     }
+
+/*
     void initializeArray(){
         for (int i=0; i<floorArrays.length; i++){
             for (int j=0; j<floorArrays.length; j++){
@@ -27,6 +42,9 @@ public class MovingRobot {
         direction = "North";
         penStatus = false;
     }
+    */
+
+
     void printArray(){
         String[][] tempArray = new String[10][10];
         for (int i=0; i<floorArrays.length; i++){
@@ -53,6 +71,7 @@ public class MovingRobot {
         }
         System.out.println();
     }
+    
     //setters:
     public void setPosX(int i){
         posX=i;
@@ -79,6 +98,9 @@ public class MovingRobot {
     }
     public String getDirection(){
         return direction;
+    }
+    public int getArraySize(){
+        return floorArrays.length;
     }
 
     public static void main (String[] args){
@@ -159,82 +181,111 @@ public class MovingRobot {
                 //move forward by s spaces where s is:
                 int s = Integer.parseInt(mixedStringArray[1]);
                 //need to set exception for s not being an integer
+                
+                String warningMsg = "Error - Robot out of bounds";
 
+                //robot moves up:
                 if (myRobot.direction.equals("North")){
-                    if (myRobot.getPenStatus()){
-                        myRobot.floorArrays[myRobot.getPosX()][myRobot.getPosY()] = 1;
-                        for (int index=0; index<s; index++){
-                            myRobot.setPosX(myRobot.getPosX()+1);
-                            myRobot.floorArrays[myRobot.getPosX()][myRobot.getPosY()] = 1;
-                        }
+                    if (myRobot.getPosX()+s>=myRobot.getArraySize()){
+                        System.out.println(warningMsg);
                     }
-                    else{
-                        for (int index=0; index<s; index++){
-                            myRobot.setPosX(myRobot.getPosX()+1);
+                    else {
+                        if (myRobot.getPenStatus()){
+                            myRobot.floorArrays[myRobot.getPosX()][myRobot.getPosY()] = 1;
+                            for (int index=0; index<s; index++){
+                                myRobot.setPosX(myRobot.getPosX()+1);
+                                myRobot.floorArrays[myRobot.getPosX()][myRobot.getPosY()] = 1;
+                            }
+                        }
+                        else{
+                            for (int index=0; index<s; index++){
+                                myRobot.setPosX(myRobot.getPosX()+1);
+                            }
                         }
                     }
                 }
+                //robot moves left:
                 else if(myRobot.direction.equals("West")){
-                    if (myRobot.getPenStatus()){
-                        myRobot.floorArrays[myRobot.getPosX()][myRobot.getPosY()] = 1;
-                        for (int index=0; index<s; index++){
-                            myRobot.setPosY(myRobot.getPosY()-1);
-                            myRobot.floorArrays[myRobot.getPosX()][myRobot.getPosY()] = 1;
-                        }
+                    if (myRobot.getPosY()-s<0){
+                        System.out.println(warningMsg);
                     }
-                    else{
-                        for (int index=0; index<s; index++){
-                            myRobot.setPosY(myRobot.getPosY()-1);
+                    else {
+                        if (myRobot.getPenStatus()){
+                            myRobot.floorArrays[myRobot.getPosX()][myRobot.getPosY()] = 1;
+                            for (int index=0; index<s; index++){
+                                myRobot.setPosY(myRobot.getPosY()-1);
+                                myRobot.floorArrays[myRobot.getPosX()][myRobot.getPosY()] = 1;
+                            }
+                        }
+                        else{
+                            for (int index=0; index<s; index++){
+                                myRobot.setPosY(myRobot.getPosY()-1);
+                            }
                         }
                     }
                 }
+                //robot moves down:
                 else if(myRobot.direction.equals("South")){
-                    if (myRobot.getPenStatus()){
-                        myRobot.floorArrays[myRobot.getPosX()][myRobot.getPosY()] = 1;
-                        for (int index=0; index<s; index++){
-                            myRobot.setPosX(myRobot.getPosX()-1);
-                            myRobot.floorArrays[myRobot.getPosX()][myRobot.getPosY()] = 1;
-                        }
+                    if (myRobot.getPosX()-s<0){
+                        System.out.println(warningMsg);
                     }
-                    else{
-                        for (int index=0; index<s; index++){
-                            myRobot.setPosX(myRobot.getPosX()-1);
+                    else {
+                        if (myRobot.getPenStatus()){
+                            myRobot.floorArrays[myRobot.getPosX()][myRobot.getPosY()] = 1;
+                            for (int index=0; index<s; index++){
+                                myRobot.setPosX(myRobot.getPosX()-1);
+                                myRobot.floorArrays[myRobot.getPosX()][myRobot.getPosY()] = 1;
+                            }
                         }
+                        else{
+                            for (int index=0; index<s; index++){
+                                myRobot.setPosX(myRobot.getPosX()-1);
+                            }
+                        } 
                     }
                 }
+                //robot moves right:
                 else if(myRobot.direction.equals("East")){
-                    if (myRobot.getPenStatus()){
-                        myRobot.floorArrays[myRobot.getPosX()][myRobot.getPosY()] = 1;
-                        for (int index=0; index<s; index++){
-                            myRobot.setPosY(myRobot.getPosY()+1);
-                            myRobot.floorArrays[myRobot.getPosX()][myRobot.getPosY()] = 1;
-                        }
+                    if (myRobot.getPosY()+s>=myRobot.getArraySize()){
+                        System.out.println(warningMsg);
                     }
-                    else{
-                        for (int index=0; index<s; index++){
-                            myRobot.setPosY(myRobot.getPosY()+1);
+                    else {
+                        if (myRobot.getPenStatus()){
+                            myRobot.floorArrays[myRobot.getPosX()][myRobot.getPosY()] = 1;
+                            for (int index=0; index<s; index++){
+                                myRobot.setPosY(myRobot.getPosY()+1);
+                                myRobot.floorArrays[myRobot.getPosX()][myRobot.getPosY()] = 1;
+                            }
                         }
+                        else{
+                            for (int index=0; index<s; index++){
+                                myRobot.setPosY(myRobot.getPosY()+1);
+                            }
+                        } 
                     }
                 }
-
             }
 
+            //Initialize new array code:
             else if (mixedStringArray[0].equals("I") || mixedStringArray[0].equals("i")){
                 //initialize the array of size n where n is:
                 int n = Integer.parseInt(mixedStringArray[1]);
                 //need to set exception for n not being an integer
-                myRobot.initializeArray();
+                myRobot.initializeArray(n);
             }
+
+            //Quit program code:
             else if (commandEntered.equals("Q") || commandEntered.equals("q")){
                 //do nothing - this is simply to skip the invalid command prompt
             }
+
+            //Any other command is invalid:
             else {
                 System.out.println("Invalid Command");
             }
         }
         while(!(commandEntered.equals("Q") || commandEntered.equals("q")));
 
-        //System.out.println(myRobot.getPenStatus());
         System.out.println("Program Terminated");
         System.out.println("Thank you for participating");
     }
