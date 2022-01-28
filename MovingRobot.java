@@ -10,43 +10,22 @@ public class MovingRobot {
     public boolean penStatus=false;
 
     //default array will be a 10*10
+
     int[][] floorArrays = new int[10][10];
 
     void initializeArray(int n){
 
-        this.floorArrays = null;
-        int[][] tempFloorArrays = new int[n][n];
-        this.floorArrays = tempFloorArrays;
-
-        for (int i=0; i<this.floorArrays.length; i++){
-            for (int j=0; j<this.floorArrays.length; j++){
-                this.floorArrays[i][j] = 0;
-            }
-        }
+        floorArrays = new int[n][n];
         posX = 0;
         posY = 0;
         direction = "North";
         penStatus = false;
 
     }
-
-/*
-    void initializeArray(){
-        for (int i=0; i<floorArrays.length; i++){
-            for (int j=0; j<floorArrays.length; j++){
-                floorArrays[i][j] = 0;
-            }
-        }
-        posX = 0;
-        posY = 0;
-        direction = "North";
-        penStatus = false;
-    }
-    */
-
 
     void printArray(){
-        String[][] tempArray = new String[10][10];
+        int n = floorArrays.length;
+        String[][] tempArray = new String[n][n];
         for (int i=0; i<floorArrays.length; i++){
             for (int j=0; j<floorArrays.length; j++){
                 if (floorArrays[i][j] == 0){
@@ -269,6 +248,7 @@ public class MovingRobot {
             //Initialize new array code:
             else if (mixedStringArray[0].equals("I") || mixedStringArray[0].equals("i")){
                 //initialize the array of size n where n is:
+
                 int n = Integer.parseInt(mixedStringArray[1]);
                 //need to set exception for n not being an integer
                 myRobot.initializeArray(n);
