@@ -14,13 +14,41 @@ public class MovingRobot {
     int[][] floorArrays = new int[10][10];
 
     void initializeArray(int n){
-
         floorArrays = new int[n][n];
         posX = 0;
         posY = 0;
         direction = "North";
         penStatus = false;
+    }
 
+    void turnRight(){
+        if (direction.equals("North")){
+            setDirection("East");
+        }
+        else if(direction.equals("East")){
+            setDirection("South");
+        }
+        else if(direction.equals("South")){
+            setDirection("West");
+        }
+        else if(direction.equals("West")){
+            setDirection("North");
+        }
+    }
+
+    void turnLeft(){
+        if (direction.equals("North")){
+            setDirection("West");
+        }
+        else if(direction.equals("West")){
+            setDirection("South");
+        }
+        else if(direction.equals("South")){
+            setDirection("East");
+        }
+        else if(direction.equals("East")){
+            setDirection("North");
+        }
     }
 
     void printArray(){
@@ -50,6 +78,101 @@ public class MovingRobot {
         }
         System.out.println();
     }
+
+    String printCurrentStatus(){
+        String penStatusString;
+        if (penStatus){
+            penStatusString = "down";
+        }
+        else{
+            penStatusString = "up";
+        }
+        return "Position: " + posX + ", " + posY + " - Pen: "+ penStatusString + " - Facing: " + direction;
+    }
+
+    void move(int s){
+        String warningMsg = "Error - Robot out of bounds";
+        //robot moves up:
+        if (direction.equals("North")){
+            if (posX+s>= floorArrays.length){
+                System.out.println(warningMsg);
+            }
+            else {
+                if (penStatus){
+                    floorArrays[posX][posY] = 1;
+                    for (int index=0; index<s; index++){
+                        setPosX(posX+1);
+                        floorArrays[posX][posY] = 1;
+                    }
+                }
+                else{
+                    for (int index=0; index<s; index++){
+                        setPosX(posX+1);
+                    }
+                }
+            }
+        }
+        //robot moves left:
+        else if(direction.equals("West")){
+            if (posY-s<0){
+                System.out.println(warningMsg);
+            }
+            else {
+                if (penStatus){
+                    floorArrays[posX][posY] = 1;
+                    for (int index=0; index<s; index++){
+                        setPosY(posY-1);
+                        floorArrays[posX][posY] = 1;
+                    }
+                }
+                else{
+                    for (int index=0; index<s; index++){
+                        setPosY(posY-1);
+                    }
+                }
+            }
+        }
+        //robot moves down:
+        else if(direction.equals("South")){
+            if (posX-s<0){
+                System.out.println(warningMsg);
+            }
+            else {
+                if (penStatus){
+                    floorArrays[posX][posY] = 1;
+                    for (int index=0; index<s; index++){
+                        setPosX(posX-1);
+                        floorArrays[posX][posY] = 1;
+                    }
+                }
+                else{
+                    for (int index=0; index<s; index++){
+                        setPosX(posX-1);
+                    }
+                }
+            }
+        }
+        //robot moves right:
+        else if(direction.equals("East")){
+            if (posY+s>= floorArrays.length){
+                System.out.println(warningMsg);
+            }
+            else {
+                if (penStatus){
+                    floorArrays[posX][posY] = 1;
+                    for (int index=0; index<s; index++){
+                        setPosY(posY+1);
+                        floorArrays[posX][posY] = 1;
+                    }
+                }
+                else{
+                    for (int index=0; index<s; index++){
+                        setPosY(posY+1);
+                    }
+                }
+            }
+        }
+    }
     
     //setters:
     public void setPosX(int i){
@@ -66,27 +189,11 @@ public class MovingRobot {
     }
 
     //getters:
-    public int getPosX(){
-        return posX;
-    }
-    public int getPosY(){
-        return posY;
-    }
-    public boolean getPenStatus(){
-        return penStatus;
-    }
-    public String getDirection(){
-        return direction;
-    }
-    public int getArraySize(){
-        return floorArrays.length;
-    }
 
     public static void main (String[] args){
         Scanner sc = new Scanner(System.in);
         System.out.println("Hello Robot");
         MovingRobot myRobot = new MovingRobot();
-
         String commandEntered;
 
         do{
@@ -106,34 +213,12 @@ public class MovingRobot {
 
             //turn right code
             else if (commandEntered.equals("R") || commandEntered.equals("r")){
-                if (myRobot.direction.equals("North")){
-                    myRobot.setDirection("East");
-                }
-                else if(myRobot.direction.equals("East")){
-                    myRobot.setDirection("South");
-                }
-                else if(myRobot.direction.equals("South")){
-                    myRobot.setDirection("West");
-                }
-                else if(myRobot.direction.equals("West")){
-                    myRobot.setDirection("North");
-                }
+                myRobot.turnRight();
             }
 
             //turn left code
             else if (commandEntered.equals("L") || commandEntered.equals("l")){
-                if (myRobot.direction.equals("North")){
-                    myRobot.setDirection("West");
-                }
-                else if(myRobot.direction.equals("West")){
-                    myRobot.setDirection("South");
-                }
-                else if(myRobot.direction.equals("South")){
-                    myRobot.setDirection("East");
-                }
-                else if(myRobot.direction.equals("East")){
-                    myRobot.setDirection("North");
-                }
+                myRobot.turnLeft();
             }
 
             //print array code
@@ -141,18 +226,9 @@ public class MovingRobot {
                 myRobot.printArray();
             }
 
-            //print current position of pen, wether it is up or down and direction
+            //print current status of robot
             else if (commandEntered.equals("C") || commandEntered.equals("c")){
-                String penStatus;
-                if (myRobot.getPenStatus()){
-                    penStatus = "down";
-                }
-                else{
-                    penStatus = "up";
-                }
-                System.out.print("Position: " + myRobot.getPosX() + ", " + myRobot.getPosY() + " - ");
-                System.out.print("Pen: "+ penStatus + " - ");
-                System.out.println("Facing: " + myRobot.getDirection());
+                System.out.println(myRobot.printCurrentStatus());
             }
 
             //move forward code
@@ -160,95 +236,12 @@ public class MovingRobot {
                 //move forward by s spaces where s is:
                 int s = Integer.parseInt(mixedStringArray[1]);
                 //need to set exception for s not being an integer
-                
-                String warningMsg = "Error - Robot out of bounds";
-
-                //robot moves up:
-                if (myRobot.direction.equals("North")){
-                    if (myRobot.getPosX()+s>=myRobot.getArraySize()){
-                        System.out.println(warningMsg);
-                    }
-                    else {
-                        if (myRobot.getPenStatus()){
-                            myRobot.floorArrays[myRobot.getPosX()][myRobot.getPosY()] = 1;
-                            for (int index=0; index<s; index++){
-                                myRobot.setPosX(myRobot.getPosX()+1);
-                                myRobot.floorArrays[myRobot.getPosX()][myRobot.getPosY()] = 1;
-                            }
-                        }
-                        else{
-                            for (int index=0; index<s; index++){
-                                myRobot.setPosX(myRobot.getPosX()+1);
-                            }
-                        }
-                    }
-                }
-                //robot moves left:
-                else if(myRobot.direction.equals("West")){
-                    if (myRobot.getPosY()-s<0){
-                        System.out.println(warningMsg);
-                    }
-                    else {
-                        if (myRobot.getPenStatus()){
-                            myRobot.floorArrays[myRobot.getPosX()][myRobot.getPosY()] = 1;
-                            for (int index=0; index<s; index++){
-                                myRobot.setPosY(myRobot.getPosY()-1);
-                                myRobot.floorArrays[myRobot.getPosX()][myRobot.getPosY()] = 1;
-                            }
-                        }
-                        else{
-                            for (int index=0; index<s; index++){
-                                myRobot.setPosY(myRobot.getPosY()-1);
-                            }
-                        }
-                    }
-                }
-                //robot moves down:
-                else if(myRobot.direction.equals("South")){
-                    if (myRobot.getPosX()-s<0){
-                        System.out.println(warningMsg);
-                    }
-                    else {
-                        if (myRobot.getPenStatus()){
-                            myRobot.floorArrays[myRobot.getPosX()][myRobot.getPosY()] = 1;
-                            for (int index=0; index<s; index++){
-                                myRobot.setPosX(myRobot.getPosX()-1);
-                                myRobot.floorArrays[myRobot.getPosX()][myRobot.getPosY()] = 1;
-                            }
-                        }
-                        else{
-                            for (int index=0; index<s; index++){
-                                myRobot.setPosX(myRobot.getPosX()-1);
-                            }
-                        } 
-                    }
-                }
-                //robot moves right:
-                else if(myRobot.direction.equals("East")){
-                    if (myRobot.getPosY()+s>=myRobot.getArraySize()){
-                        System.out.println(warningMsg);
-                    }
-                    else {
-                        if (myRobot.getPenStatus()){
-                            myRobot.floorArrays[myRobot.getPosX()][myRobot.getPosY()] = 1;
-                            for (int index=0; index<s; index++){
-                                myRobot.setPosY(myRobot.getPosY()+1);
-                                myRobot.floorArrays[myRobot.getPosX()][myRobot.getPosY()] = 1;
-                            }
-                        }
-                        else{
-                            for (int index=0; index<s; index++){
-                                myRobot.setPosY(myRobot.getPosY()+1);
-                            }
-                        } 
-                    }
-                }
+                myRobot.move(s);
             }
 
             //Initialize new array code:
             else if (mixedStringArray[0].equals("I") || mixedStringArray[0].equals("i")){
                 //initialize the array of size n where n is:
-
                 int n = Integer.parseInt(mixedStringArray[1]);
                 //need to set exception for n not being an integer
                 myRobot.initializeArray(n);
@@ -270,5 +263,4 @@ public class MovingRobot {
         System.out.println("Thank you for participating");
     }
 
-    
 }
