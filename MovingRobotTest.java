@@ -1,3 +1,8 @@
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.io.PrintStream;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class MovingRobotTest {
@@ -133,9 +138,100 @@ class MovingRobotTest {
         assertEquals(false, testRobot.penStatus);
     }
 
+    //print array testing
+    private final PrintStream standardOut = System.out;
+    private final ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
+    @org.junit.jupiter.api.BeforeEach
+    public void setUp() {
+        System.setOut(new PrintStream(outputStreamCaptor));
+    }
     @org.junit.jupiter.api.Test
-    void printArray() {
+    void testPrintArray1() {
+        MovingRobot testRobot = new MovingRobot();
+        testRobot.initializeArray(3);
+        testRobot.printArray();
+        assertEquals("2       \n1       \n0       \n  0 1 2", outputStreamCaptor.toString().trim());
+    }
+    @org.junit.jupiter.api.Test
+    void testPrintArray2() {
+        MovingRobot testRobot = new MovingRobot();
+        testRobot.initializeArray(5);
+        testRobot.move(3);
+        testRobot.setPenStatus(true);
+        testRobot.turnRight();
+        testRobot.move(4);
+        testRobot.turnRight();
+        testRobot.move(2);
+        testRobot.printArray();
+        assertEquals("4           \n3 * * * * * \n2         * \n1         * \n0           \n  0 1 2 3 4", outputStreamCaptor.toString().trim());
+    }
+    @org.junit.jupiter.api.Test
+    void testPrintArray3() {
+        MovingRobot testRobot = new MovingRobot();
+        testRobot.initializeArray(4);
+        testRobot.turnRight();
+        testRobot.move(1);
+        testRobot.setPenStatus(true);
+        testRobot.turnLeft();
+        testRobot.move(3);
+        testRobot.printArray();
+        assertEquals("3   *     \n2   *     \n1   *     \n0   *     \n  0 1 2 3", outputStreamCaptor.toString().trim());
+    }
 
+    //move testing
+    @org.junit.jupiter.api.Test
+    void testMovePosXWithPenUp(){
+        MovingRobot testRobot = new MovingRobot();
+        testRobot.move(5);
+        assertEquals(5, testRobot.posX);
+    }
+    @org.junit.jupiter.api.Test
+    void testMovePosYWithPenUp(){
+        MovingRobot testRobot = new MovingRobot();
+        testRobot.setDirection("East");
+        testRobot.move(5);
+        assertEquals(5, testRobot.posY);
+    }
+    @org.junit.jupiter.api.Test
+    void testMovePosXWithPenDown(){
+        MovingRobot testRobot = new MovingRobot();
+        testRobot.setPenStatus(true);
+        testRobot.move(5);
+        assertEquals(1, testRobot.floorArrays[0][0]);
+        assertEquals(1, testRobot.floorArrays[1][0]);
+        assertEquals(1, testRobot.floorArrays[2][0]);
+        assertEquals(1, testRobot.floorArrays[3][0]);
+        assertEquals(1, testRobot.floorArrays[4][0]);
+        assertEquals(1, testRobot.floorArrays[5][0]);
+        assertEquals(0, testRobot.floorArrays[6][0]);
+        assertEquals(5, testRobot.posX);
+    }
+    @org.junit.jupiter.api.Test
+    void testMovePosYWithPenDown(){
+        MovingRobot testRobot = new MovingRobot();
+        testRobot.setPenStatus(true);
+        testRobot.setDirection("East");
+        testRobot.move(5);
+        assertEquals(1, testRobot.floorArrays[0][0]);
+        assertEquals(1, testRobot.floorArrays[0][1]);
+        assertEquals(1, testRobot.floorArrays[0][2]);
+        assertEquals(1, testRobot.floorArrays[0][3]);
+        assertEquals(1, testRobot.floorArrays[0][4]);
+        assertEquals(1, testRobot.floorArrays[0][5]);
+        assertEquals(0, testRobot.floorArrays[0][6]);
+        assertEquals(5, testRobot.posY);
+    }
+
+    @org.junit.jupiter.api.Test
+    void testQuitting(){
+        String input = "Q";
+        InputStream in = new ByteArrayInputStream(input.getBytes());
+        System.setIn(in);
+        MovingRobot.main(new String[0]);
+        assertEquals("Hello Robot\n" +
+                "Enter Desired Command:\n" +
+                "Program Terminated\n" +
+                "Thank you for participating", outputStreamCaptor.toString().trim());
     }
 
     //setters testing:
@@ -154,10 +250,16 @@ class MovingRobotTest {
     }
 
     @org.junit.jupiter.api.Test
-    void setPenStatus() {
+    void setPenStatusTrue() {
         MovingRobot testRobot = new MovingRobot();
         testRobot.setPenStatus(true);
         assertEquals(true, testRobot.penStatus);
+    }
+    @org.junit.jupiter.api.Test
+    void setPenStatusFalse() {
+        MovingRobot testRobot = new MovingRobot();
+        testRobot.setPenStatus(false);
+        assertEquals(false, testRobot.penStatus);
     }
 
     @org.junit.jupiter.api.Test

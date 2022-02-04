@@ -188,7 +188,18 @@ public class MovingRobot {
         direction = d;
     }
 
-    //getters:
+    //check if integer:
+    public boolean isStringInt(String s)
+    {
+        try
+        {
+            Integer.parseInt(s);
+            return true;
+        } catch (NumberFormatException ex)
+        {
+            return false;
+        }
+    }
 
     public static void main (String[] args){
         Scanner sc = new Scanner(System.in);
@@ -233,18 +244,29 @@ public class MovingRobot {
 
             //move forward code
             else if (mixedStringArray[0].equals("M") || mixedStringArray[0].equals("m")){
+
                 //move forward by s spaces where s is:
-                int s = Integer.parseInt(mixedStringArray[1]);
+                if (myRobot.isStringInt(mixedStringArray[1])){
+                    int s = Integer.parseInt(mixedStringArray[1]);
+                    myRobot.move(s);
+                }
                 //need to set exception for s not being an integer
-                myRobot.move(s);
+                else{
+                    System.out.println("Invalid Command");
+                }
             }
 
             //Initialize new array code:
             else if (mixedStringArray[0].equals("I") || mixedStringArray[0].equals("i")){
-                //initialize the array of size n where n is:
-                int n = Integer.parseInt(mixedStringArray[1]);
+                //initialize array of size n
+                if (myRobot.isStringInt(mixedStringArray[1])){
+                    int n = Integer.parseInt(mixedStringArray[1]);
+                    myRobot.initializeArray(n);
+                }
                 //need to set exception for n not being an integer
-                myRobot.initializeArray(n);
+                else{
+                    System.out.println("Invalid Command");
+                }
             }
 
             //Quit program code:
