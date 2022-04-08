@@ -38,9 +38,9 @@ class MovingRobotTest {
     @org.junit.jupiter.api.Test
     void testTurnRightWest(){
         MovingRobot testRobot = new MovingRobot();
-        if (testRobot.direction=="South"){
+        if (testRobot.direction=="West"){
             testRobot.turnRight();
-            assertEquals("West", testRobot.direction);
+            assertEquals("North", testRobot.direction);
         }
     }
 
